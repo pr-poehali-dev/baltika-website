@@ -6,6 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Icon from '@/components/ui/icon';
+import { toast } from '@/components/ui/sonner';
 
 const products = [
   { id: 1, name: "Балтика №3 Классическое", type: "Светлое", alc: "4.8%", desc: "Классический вкус, проверенный временем" },
@@ -23,6 +24,33 @@ const achievements = [
   { year: "2024", title: "30+ стран экспорта", icon: "Award" }
 ];
 
+const values = [
+  {
+    title: "Качество превыше всего",
+    desc: "Мы используем только лучшие ингредиенты и строго контролируем каждый этап производства",
+    icon: "Award",
+    color: "from-amber-500 to-amber-600"
+  },
+  {
+    title: "Инновации и традиции",
+    desc: "Сочетаем вековые пивоваренные традиции с современными технологиями",
+    icon: "Lightbulb",
+    color: "from-blue-500 to-blue-600"
+  },
+  {
+    title: "Ответственность",
+    desc: "Заботимся об экологии, обществе и продвигаем культуру умеренного потребления",
+    icon: "Heart",
+    color: "from-green-500 to-green-600"
+  },
+  {
+    title: "Уважение к людям",
+    desc: "Создаём комфортные условия для сотрудников и партнёрские отношения с клиентами",
+    icon: "Users",
+    color: "from-purple-500 to-purple-600"
+  }
+];
+
 export default function Index() {
   const [selectedType, setSelectedType] = useState("Все");
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
@@ -33,8 +61,15 @@ export default function Index() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
+    toast.success('Сообщение отправлено!', {
+      description: 'Мы свяжемся с вами в ближайшее время'
+    });
     setFormData({ name: '', email: '', message: '' });
+  };
+
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    element?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
@@ -42,7 +77,7 @@ export default function Index() {
       <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-lg border-b shadow-sm">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
+            <button onClick={() => scrollToSection('hero')} className="flex items-center gap-3 hover:opacity-80 transition-opacity">
               <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center shadow-lg">
                 <Icon name="Beer" className="text-amber-400" size={28} />
               </div>
@@ -52,21 +87,22 @@ export default function Index() {
                 </h1>
                 <p className="text-xs text-muted-foreground">С 1990 года</p>
               </div>
-            </div>
+            </button>
             <nav className="hidden md:flex gap-8">
-              <a href="#products" className="text-sm font-medium hover:text-primary transition-colors">Продукция</a>
-              <a href="#about" className="text-sm font-medium hover:text-primary transition-colors">О компании</a>
-              <a href="#quality" className="text-sm font-medium hover:text-primary transition-colors">Качество</a>
-              <a href="#contact" className="text-sm font-medium hover:text-primary transition-colors">Контакты</a>
+              <button onClick={() => scrollToSection('products')} className="text-sm font-medium hover:text-primary transition-colors">Продукция</button>
+              <button onClick={() => scrollToSection('about')} className="text-sm font-medium hover:text-primary transition-colors">О компании</button>
+              <button onClick={() => scrollToSection('values')} className="text-sm font-medium hover:text-primary transition-colors">Ценности</button>
+              <button onClick={() => scrollToSection('quality')} className="text-sm font-medium hover:text-primary transition-colors">Качество</button>
+              <button onClick={() => scrollToSection('contact')} className="text-sm font-medium hover:text-primary transition-colors">Контакты</button>
             </nav>
-            <Button className="bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900">
+            <Button onClick={() => toast.info('Раздел "Где купить" в разработке')} className="bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900">
               Где купить
             </Button>
           </div>
         </div>
       </header>
 
-      <section className="relative h-[700px] overflow-hidden">
+      <section id="hero" className="relative h-[700px] overflow-hidden">
         <div className="absolute inset-0">
           <img 
             src="https://cdn.poehali.dev/projects/7421cca5-0f09-43bd-8e4c-494ec9ab45e3/files/3b2abc00-7e82-49f0-a05e-549de262e078.jpg"
@@ -87,11 +123,11 @@ export default function Index() {
               Мы создаём пиво мирового класса, используя лучшие ингредиенты и проверенные временем технологии
             </p>
             <div className="flex gap-4">
-              <Button size="lg" className="bg-amber-500 hover:bg-amber-600 text-white">
+              <Button onClick={() => scrollToSection('products')} size="lg" className="bg-amber-500 hover:bg-amber-600 text-white">
                 Наша продукция
                 <Icon name="ArrowRight" className="ml-2" size={18} />
               </Button>
-              <Button size="lg" variant="outline" className="bg-white/10 backdrop-blur-sm text-white border-white hover:bg-white/20">
+              <Button onClick={() => scrollToSection('about')} size="lg" variant="outline" className="bg-white/10 backdrop-blur-sm text-white border-white hover:bg-white/20">
                 Узнать больше
               </Button>
             </div>
@@ -123,7 +159,7 @@ export default function Index() {
             </p>
           </div>
 
-          <div className="flex justify-center gap-3 mb-12">
+          <div className="flex justify-center gap-3 mb-12 flex-wrap">
             {["Все", "Светлое", "Тёмное", "Крепкое", "Безалкогольное"].map((type) => (
               <Button
                 key={type}
@@ -151,7 +187,10 @@ export default function Index() {
                   <CardDescription className="text-base">{product.desc}</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <Button className="w-full bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900">
+                  <Button 
+                    onClick={() => toast.info(`${product.name}`, { description: product.desc })}
+                    className="w-full bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900"
+                  >
                     Подробнее
                     <Icon name="ChevronRight" className="ml-2" size={16} />
                   </Button>
@@ -164,7 +203,7 @@ export default function Index() {
 
       <section id="about" className="py-24 bg-gradient-to-br from-slate-50 to-blue-50">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-16 items-center">
+          <div className="grid md:grid-cols-2 gap-16 items-center mb-24">
             <div className="animate-fade-in">
               <Badge className="mb-6 bg-amber-500 text-white border-0">О компании</Badge>
               <h2 className="text-5xl font-bold mb-6">34 года традиций и инноваций</h2>
@@ -181,7 +220,7 @@ export default function Index() {
                 <div className="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow">
                   <Icon name="Award" className="text-amber-500 mb-3" size={32} />
                   <div className="text-2xl font-bold mb-1">200+</div>
-                  <div className="text-sm text-muted-foreground">наград</div>
+                  <div className="text-sm text-muted-foreground">международных наград</div>
                 </div>
                 <div className="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow">
                   <Icon name="Users" className="text-blue-600 mb-3" size={32} />
@@ -204,9 +243,21 @@ export default function Index() {
             </div>
           </div>
 
-          <div className="grid md:grid-cols-4 gap-8 mt-24">
+          <div className="text-center mb-16 animate-fade-in">
+            <h3 className="text-4xl font-bold mb-4">Наша миссия</h3>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+              Создавать качественное пиво, которое объединяет людей и дарит радость, 
+              при этом заботясь о природе и обществе. Мы стремимся быть лидером отрасли 
+              не только по объёмам производства, но и по качеству, инновациям и социальной ответственности.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-4 gap-8 mt-16">
             {achievements.map((item, index) => (
-              <Card key={index} className="text-center hover:shadow-lg transition-all hover:-translate-y-1 animate-fade-in" style={{ animationDelay: `${index * 150}ms` }}>
+              <Card key={index} className="text-center hover:shadow-lg transition-all hover:-translate-y-1 animate-fade-in cursor-pointer" 
+                style={{ animationDelay: `${index * 150}ms` }}
+                onClick={() => toast.info(item.title, { description: `${item.year} год` })}
+              >
                 <CardHeader>
                   <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-800 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Icon name={item.icon as any} className="text-amber-400" size={28} />
@@ -220,7 +271,80 @@ export default function Index() {
         </div>
       </section>
 
-      <section id="quality" className="py-24 bg-white">
+      <section id="values" className="py-24 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16 animate-fade-in">
+            <Badge className="mb-4 bg-purple-100 text-purple-700 border-0">Ценности</Badge>
+            <h2 className="text-5xl font-bold mb-4">Наши ценности</h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Принципы, которыми мы руководствуемся каждый день
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto mb-16">
+            {values.map((value, index) => (
+              <Card key={index} className="overflow-hidden hover:shadow-xl transition-all animate-fade-in" style={{ animationDelay: `${index * 100}ms` }}>
+                <CardHeader>
+                  <div className={`w-16 h-16 bg-gradient-to-br ${value.color} rounded-xl flex items-center justify-center mb-4`}>
+                    <Icon name={value.icon as any} className="text-white" size={32} />
+                  </div>
+                  <CardTitle className="text-2xl mb-3">{value.title}</CardTitle>
+                  <CardDescription className="text-base leading-relaxed">{value.desc}</CardDescription>
+                </CardHeader>
+              </Card>
+            ))}
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+            <div className="animate-fade-in">
+              <img 
+                src="https://cdn.poehali.dev/projects/7421cca5-0f09-43bd-8e4c-494ec9ab45e3/files/6ddeaa7d-bfdb-4fc3-93db-61da0766dbfb.jpg"
+                alt="Команда Балтика" 
+                className="rounded-2xl shadow-xl"
+              />
+            </div>
+            <div className="animate-fade-in">
+              <h3 className="text-3xl font-bold mb-6">Социальная ответственность</h3>
+              <div className="space-y-4 mb-6">
+                <div className="flex gap-4">
+                  <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Icon name="Leaf" className="text-green-600" size={24} />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold mb-1">Забота об экологии</h4>
+                    <p className="text-sm text-muted-foreground">Используем возобновляемую энергию и программы переработки</p>
+                  </div>
+                </div>
+                <div className="flex gap-4">
+                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Icon name="GraduationCap" className="text-blue-600" size={24} />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold mb-1">Образовательные программы</h4>
+                    <p className="text-sm text-muted-foreground">Поддерживаем молодых специалистов и культуру потребления</p>
+                  </div>
+                </div>
+                <div className="flex gap-4">
+                  <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Icon name="HeartHandshake" className="text-purple-600" size={24} />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold mb-1">Благотворительность</h4>
+                    <p className="text-sm text-muted-foreground">Участвуем в социальных проектах и помогаем обществу</p>
+                  </div>
+                </div>
+              </div>
+              <img 
+                src="https://cdn.poehali.dev/projects/7421cca5-0f09-43bd-8e4c-494ec9ab45e3/files/09ceef5e-c652-4cd5-bd3d-27998055584c.jpg"
+                alt="Экология" 
+                className="rounded-xl shadow-lg mt-6"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="quality" className="py-24 bg-gradient-to-br from-slate-50 to-blue-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16 animate-fade-in">
             <Badge className="mb-4 bg-amber-100 text-amber-700 border-0">Качество</Badge>
@@ -253,7 +377,7 @@ export default function Index() {
                       </div>
                       <div>
                         <h4 className="font-semibold mb-1">Солод высшего качества</h4>
-                        <p className="text-sm text-muted-foreground">Отборный ячменный солод от проверенных поставщиков</p>
+                        <p className="text-sm text-muted-foreground">Отборный ячменный солод от проверенных поставщиков Европы</p>
                       </div>
                     </div>
                     <div className="flex gap-4">
@@ -262,7 +386,7 @@ export default function Index() {
                       </div>
                       <div>
                         <h4 className="font-semibold mb-1">Чистейшая вода</h4>
-                        <p className="text-sm text-muted-foreground">Многоступенчатая система очистки воды</p>
+                        <p className="text-sm text-muted-foreground">Многоступенчатая система очистки артезианской воды</p>
                       </div>
                     </div>
                     <div className="flex gap-4">
@@ -271,7 +395,7 @@ export default function Index() {
                       </div>
                       <div>
                         <h4 className="font-semibold mb-1">Натуральный хмель</h4>
-                        <p className="text-sm text-muted-foreground">Ароматные сорта хмеля из лучших регионов</p>
+                        <p className="text-sm text-muted-foreground">Ароматные сорта хмеля из Германии и Чехии</p>
                       </div>
                     </div>
                   </div>
@@ -288,22 +412,29 @@ export default function Index() {
                         <span className="text-3xl font-bold text-white">1</span>
                       </div>
                       <h4 className="font-semibold mb-2">Варка сусла</h4>
-                      <p className="text-sm text-muted-foreground">Традиционная технология варки с соблюдением температурных режимов</p>
+                      <p className="text-sm text-muted-foreground">Традиционная технология варки с точным соблюдением температурных режимов</p>
                     </div>
                     <div className="text-center">
                       <div className="w-20 h-20 bg-gradient-to-br from-blue-600 to-blue-800 rounded-full flex items-center justify-center mx-auto mb-4">
                         <span className="text-3xl font-bold text-white">2</span>
                       </div>
                       <h4 className="font-semibold mb-2">Брожение</h4>
-                      <p className="text-sm text-muted-foreground">Контролируемое брожение в современных танках</p>
+                      <p className="text-sm text-muted-foreground">Контролируемое брожение в современных цилиндро-конических танках</p>
                     </div>
                     <div className="text-center">
                       <div className="w-20 h-20 bg-gradient-to-br from-blue-600 to-blue-800 rounded-full flex items-center justify-center mx-auto mb-4">
                         <span className="text-3xl font-bold text-white">3</span>
                       </div>
                       <h4 className="font-semibold mb-2">Розлив</h4>
-                      <p className="text-sm text-muted-foreground">Автоматизированная линия розлива с защитой от кислорода</p>
+                      <p className="text-sm text-muted-foreground">Автоматизированная линия розлива с защитой от кислорода и света</p>
                     </div>
+                  </div>
+                  <div className="mt-8">
+                    <img 
+                      src="https://cdn.poehali.dev/projects/7421cca5-0f09-43bd-8e4c-494ec9ab45e3/files/d6cf6908-8bc1-4304-8cc1-46ad0e9666cf.jpg"
+                      alt="Контроль качества" 
+                      className="rounded-xl shadow-lg w-full"
+                    />
                   </div>
                 </CardContent>
               </Card>
@@ -319,7 +450,7 @@ export default function Index() {
                       </div>
                       <div className="flex-1">
                         <h4 className="font-semibold mb-2">Лабораторный контроль</h4>
-                        <p className="text-muted-foreground">Более 100 параметров проверяется на каждом этапе производства</p>
+                        <p className="text-muted-foreground">Более 100 параметров проверяется на каждом этапе производства нашими специалистами</p>
                       </div>
                     </div>
                     <div className="flex items-start gap-4">
@@ -328,7 +459,7 @@ export default function Index() {
                       </div>
                       <div className="flex-1">
                         <h4 className="font-semibold mb-2">Международные сертификаты</h4>
-                        <p className="text-muted-foreground">Соответствие стандартам ISO и ХАССП</p>
+                        <p className="text-muted-foreground">Соответствие стандартам ISO 9001, ISO 14001 и ХАССП</p>
                       </div>
                     </div>
                     <div className="flex items-start gap-4">
@@ -337,7 +468,7 @@ export default function Index() {
                       </div>
                       <div className="flex-1">
                         <h4 className="font-semibold mb-2">Дегустационная комиссия</h4>
-                        <p className="text-muted-foreground">Экспертная оценка вкусовых качеств каждой партии</p>
+                        <p className="text-muted-foreground">Профессиональная экспертная оценка вкусовых качеств каждой партии продукции</p>
                       </div>
                     </div>
                   </div>
@@ -362,7 +493,10 @@ export default function Index() {
                   <h3 className="text-2xl font-bold mb-6">Контактная информация</h3>
                   
                   <div className="space-y-6">
-                    <div className="flex items-start gap-4">
+                    <button 
+                      onClick={() => toast.info('Адрес', { description: 'г. Санкт-Петербург, 6-й Верхний переулок, д. 3' })}
+                      className="flex items-start gap-4 w-full text-left hover:opacity-80 transition-opacity"
+                    >
                       <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center backdrop-blur-sm">
                         <Icon name="MapPin" size={24} />
                       </div>
@@ -370,9 +504,12 @@ export default function Index() {
                         <h4 className="font-semibold mb-1">Головной офис</h4>
                         <p className="opacity-90">г. Санкт-Петербург, 6-й Верхний переулок, д. 3</p>
                       </div>
-                    </div>
+                    </button>
                     
-                    <div className="flex items-start gap-4">
+                    <button 
+                      onClick={() => toast.info('Телефон', { description: '8 (800) 700-03-00' })}
+                      className="flex items-start gap-4 w-full text-left hover:opacity-80 transition-opacity"
+                    >
                       <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center backdrop-blur-sm">
                         <Icon name="Phone" size={24} />
                       </div>
@@ -380,9 +517,12 @@ export default function Index() {
                         <h4 className="font-semibold mb-1">Телефон</h4>
                         <p className="opacity-90">8 (800) 700-03-00</p>
                       </div>
-                    </div>
+                    </button>
                     
-                    <div className="flex items-start gap-4">
+                    <button 
+                      onClick={() => toast.info('Email', { description: 'info@baltika.ru' })}
+                      className="flex items-start gap-4 w-full text-left hover:opacity-80 transition-opacity"
+                    >
                       <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center backdrop-blur-sm">
                         <Icon name="Mail" size={24} />
                       </div>
@@ -390,23 +530,43 @@ export default function Index() {
                         <h4 className="font-semibold mb-1">Email</h4>
                         <p className="opacity-90">info@baltika.ru</p>
                       </div>
-                    </div>
+                    </button>
                   </div>
                 </div>
 
                 <div>
                   <h4 className="font-semibold mb-4">Социальные сети</h4>
                   <div className="flex gap-3">
-                    <Button variant="secondary" size="icon" className="rounded-lg bg-white/10 hover:bg-white/20">
+                    <Button 
+                      onClick={() => toast.info('Instagram', { description: '@baltika_official' })}
+                      variant="secondary" 
+                      size="icon" 
+                      className="rounded-lg bg-white/10 hover:bg-white/20"
+                    >
                       <Icon name="Instagram" size={20} />
                     </Button>
-                    <Button variant="secondary" size="icon" className="rounded-lg bg-white/10 hover:bg-white/20">
+                    <Button 
+                      onClick={() => toast.info('Facebook', { description: 'Baltika Official' })}
+                      variant="secondary" 
+                      size="icon" 
+                      className="rounded-lg bg-white/10 hover:bg-white/20"
+                    >
                       <Icon name="Facebook" size={20} />
                     </Button>
-                    <Button variant="secondary" size="icon" className="rounded-lg bg-white/10 hover:bg-white/20">
+                    <Button 
+                      onClick={() => toast.info('Twitter', { description: '@baltika' })}
+                      variant="secondary" 
+                      size="icon" 
+                      className="rounded-lg bg-white/10 hover:bg-white/20"
+                    >
                       <Icon name="Twitter" size={20} />
                     </Button>
-                    <Button variant="secondary" size="icon" className="rounded-lg bg-white/10 hover:bg-white/20">
+                    <Button 
+                      onClick={() => toast.info('YouTube', { description: 'Baltika Breweries' })}
+                      variant="secondary" 
+                      size="icon" 
+                      className="rounded-lg bg-white/10 hover:bg-white/20"
+                    >
                       <Icon name="Youtube" size={20} />
                     </Button>
                   </div>
@@ -462,37 +622,37 @@ export default function Index() {
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
-              <div className="flex items-center gap-2 mb-4">
+              <button onClick={() => scrollToSection('hero')} className="flex items-center gap-2 mb-4 hover:opacity-80 transition-opacity">
                 <Icon name="Beer" className="text-amber-400" size={24} />
                 <span className="text-xl font-bold">БАЛТИКА</span>
-              </div>
+              </button>
               <p className="text-sm text-slate-400">Традиции качества с 1990 года</p>
             </div>
             <div>
               <h4 className="font-semibold mb-4">Продукция</h4>
               <ul className="space-y-2 text-sm text-slate-400">
-                <li><a href="#" className="hover:text-white transition-colors">Светлое пиво</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Тёмное пиво</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Крепкое пиво</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Безалкогольное</a></li>
+                <li><button onClick={() => { setSelectedType('Светлое'); scrollToSection('products'); }} className="hover:text-white transition-colors">Светлое пиво</button></li>
+                <li><button onClick={() => { setSelectedType('Тёмное'); scrollToSection('products'); }} className="hover:text-white transition-colors">Тёмное пиво</button></li>
+                <li><button onClick={() => { setSelectedType('Крепкое'); scrollToSection('products'); }} className="hover:text-white transition-colors">Крепкое пиво</button></li>
+                <li><button onClick={() => { setSelectedType('Безалкогольное'); scrollToSection('products'); }} className="hover:text-white transition-colors">Безалкогольное</button></li>
               </ul>
             </div>
             <div>
               <h4 className="font-semibold mb-4">Компания</h4>
               <ul className="space-y-2 text-sm text-slate-400">
-                <li><a href="#" className="hover:text-white transition-colors">О нас</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">История</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Карьера</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Пресс-центр</a></li>
+                <li><button onClick={() => scrollToSection('about')} className="hover:text-white transition-colors">О нас</button></li>
+                <li><button onClick={() => scrollToSection('values')} className="hover:text-white transition-colors">Ценности</button></li>
+                <li><button onClick={() => toast.info('Раздел "Карьера" в разработке')} className="hover:text-white transition-colors">Карьера</button></li>
+                <li><button onClick={() => toast.info('Раздел "Пресс-центр" в разработке')} className="hover:text-white transition-colors">Пресс-центр</button></li>
               </ul>
             </div>
             <div>
               <h4 className="font-semibold mb-4">Информация</h4>
               <ul className="space-y-2 text-sm text-slate-400">
-                <li><a href="#" className="hover:text-white transition-colors">Контакты</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Где купить</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Экскурсии</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">FAQ</a></li>
+                <li><button onClick={() => scrollToSection('contact')} className="hover:text-white transition-colors">Контакты</button></li>
+                <li><button onClick={() => toast.info('Раздел "Где купить" в разработке')} className="hover:text-white transition-colors">Где купить</button></li>
+                <li><button onClick={() => toast.info('Раздел "Экскурсии" в разработке')} className="hover:text-white transition-colors">Экскурсии</button></li>
+                <li><button onClick={() => toast.info('Раздел "FAQ" в разработке')} className="hover:text-white transition-colors">FAQ</button></li>
               </ul>
             </div>
           </div>
