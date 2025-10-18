@@ -6,7 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Icon from '@/components/ui/icon';
-import { toast } from '@/components/ui/sonner';
+import { toast } from 'sonner';
 
 const products = [
   { id: 1, name: "Балтика №3 Классическое", type: "Светлое", alc: "4.8%", desc: "Классический вкус, проверенный временем" },
