@@ -1,62 +1,35 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Icon from '@/components/ui/icon';
 
-const newsItems = [
-  {
-    id: 1,
-    title: "Открытие нового студенческого медиацентра",
-    date: "15 октября 2025",
-    category: "События",
-    image: "https://cdn.poehali.dev/projects/7421cca5-0f09-43bd-8e4c-494ec9ab45e3/files/87064f09-65c7-4243-a0a2-3e31f1973b4e.jpg",
-    excerpt: "Пресс-служба БАлтика открывает новый медиацентр для студентов с современным оборудованием"
-  },
-  {
-    id: 2,
-    title: "Фестиваль молодежной журналистики 2025",
-    date: "12 октября 2025",
-    category: "Анонсы",
-    image: "https://cdn.poehali.dev/projects/7421cca5-0f09-43bd-8e4c-494ec9ab45e3/files/e6f41492-ffa7-4154-a4e8-82ff2315f981.jpg",
-    excerpt: "Приглашаем всех желающих принять участие в ежегодном фестивале студенческой журналистики"
-  },
-  {
-    id: 3,
-    title: "Мастер-класс от ведущих журналистов",
-    date: "10 октября 2025",
-    category: "Мероприятия",
-    image: "https://cdn.poehali.dev/projects/7421cca5-0f09-43bd-8e4c-494ec9ab45e3/files/a15d5739-9ba4-40d3-9aa7-104addae6e5a.jpg",
-    excerpt: "Серия мастер-классов от профессионалов медиаиндустрии для студентов"
-  }
+const products = [
+  { id: 1, name: "Балтика №3 Классическое", type: "Светлое", alc: "4.8%", desc: "Классический вкус, проверенный временем" },
+  { id: 2, name: "Балтика №7 Экспортное", type: "Светлое", alc: "5.4%", desc: "Премиальное пиво для ценителей" },
+  { id: 3, name: "Балтика №9 Крепкое", type: "Крепкое", alc: "8.0%", desc: "Насыщенный и плотный вкус" },
+  { id: 4, name: "Балтика №0 Безалкогольное", type: "Безалкогольное", alc: "0.5%", desc: "Вкус настоящего пива без алкоголя" },
+  { id: 5, name: "Балтика №4 Оригинальное", type: "Тёмное", alc: "5.6%", desc: "Богатый солодовый вкус" },
+  { id: 6, name: "Балтика №6 Портер", type: "Тёмное", alc: "7.0%", desc: "Классический портер с шоколадными нотами" }
 ];
 
-const teamMembers = [
-  { name: "Алексей Смирнов", role: "Главный редактор", image: "👨‍💼" },
-  { name: "Мария Иванова", role: "Журналист", image: "👩‍💻" },
-  { name: "Дмитрий Петров", role: "Фотограф", image: "📸" },
-  { name: "Анна Козлова", role: "SMM-специалист", image: "📱" }
-];
-
-const events = [
-  { date: "20.10", title: "Круглый стол о медиаграмотности", time: "15:00" },
-  { date: "25.10", title: "Конкурс студенческих репортажей", time: "12:00" },
-  { date: "30.10", title: "День открытых дверей пресс-службы", time: "14:00" }
+const achievements = [
+  { year: "1990", title: "Основание завода", icon: "Factory" },
+  { year: "1996", title: "Первый экспорт", icon: "Globe" },
+  { year: "2005", title: "Лидер рынка", icon: "Trophy" },
+  { year: "2024", title: "30+ стран экспорта", icon: "Award" }
 ];
 
 export default function Index() {
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [selectedType, setSelectedType] = useState("Все");
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % newsItems.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, []);
+  const filteredProducts = selectedType === "Все" 
+    ? products 
+    : products.filter(p => p.type === selectedType);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -65,317 +38,376 @@ export default function Index() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50">
-      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-purple-100 shadow-sm">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+      <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-lg border-b shadow-sm">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-gradient-to-br from-purple-600 to-pink-600 rounded-xl flex items-center justify-center shadow-lg animate-float">
-                <Icon name="Radio" className="text-white" size={24} />
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center shadow-lg">
+                <Icon name="Beer" className="text-amber-400" size={28} />
               </div>
               <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-                  БАлтика
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-700 to-blue-900 bg-clip-text text-transparent">
+                  БАЛТИКА
                 </h1>
-                <p className="text-sm text-muted-foreground">Пресс-служба</p>
+                <p className="text-xs text-muted-foreground">С 1990 года</p>
               </div>
             </div>
-            <nav className="hidden md:flex gap-6">
-              <a href="#news" className="text-sm font-medium hover:text-primary transition-colors">Новости</a>
-              <a href="#about" className="text-sm font-medium hover:text-primary transition-colors">О нас</a>
-              <a href="#events" className="text-sm font-medium hover:text-primary transition-colors">Мероприятия</a>
+            <nav className="hidden md:flex gap-8">
+              <a href="#products" className="text-sm font-medium hover:text-primary transition-colors">Продукция</a>
+              <a href="#about" className="text-sm font-medium hover:text-primary transition-colors">О компании</a>
+              <a href="#quality" className="text-sm font-medium hover:text-primary transition-colors">Качество</a>
               <a href="#contact" className="text-sm font-medium hover:text-primary transition-colors">Контакты</a>
             </nav>
-            <div className="flex gap-2">
-              <Button variant="ghost" size="icon">
-                <Icon name="Instagram" size={20} />
-              </Button>
-              <Button variant="ghost" size="icon">
-                <Icon name="Mail" size={20} />
-              </Button>
-            </div>
+            <Button className="bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900">
+              Где купить
+            </Button>
           </div>
         </div>
       </header>
 
-      <section className="relative h-[600px] overflow-hidden">
+      <section className="relative h-[700px] overflow-hidden">
         <div className="absolute inset-0">
-          {newsItems.map((item, index) => (
-            <div
-              key={item.id}
-              className={`absolute inset-0 transition-opacity duration-1000 ${
-                index === currentSlide ? 'opacity-100' : 'opacity-0'
-              }`}
-            >
-              <img 
-                src={item.image} 
-                alt={item.title} 
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
-            </div>
-          ))}
+          <img 
+            src="https://cdn.poehali.dev/projects/7421cca5-0f09-43bd-8e4c-494ec9ab45e3/files/3b2abc00-7e82-49f0-a05e-549de262e078.jpg"
+            alt="Балтика продукция" 
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-900/90 via-blue-800/70 to-transparent" />
         </div>
-        <div className="relative container mx-auto px-4 h-full flex items-end pb-20">
+        <div className="relative container mx-auto px-4 h-full flex items-center">
           <div className="max-w-2xl animate-fade-in">
-            <Badge className="mb-4 bg-gradient-to-r from-purple-600 to-pink-600 border-0">
-              {newsItems[currentSlide].category}
+            <Badge className="mb-6 bg-amber-500 border-0 text-white text-sm px-4 py-1">
+              Лидер пивоваренной индустрии
             </Badge>
-            <h2 className="text-5xl font-bold text-white mb-4">
-              {newsItems[currentSlide].title}
+            <h2 className="text-6xl font-bold text-white mb-6 leading-tight">
+              Традиции качества<br/>с 1990 года
             </h2>
-            <p className="text-xl text-white/90 mb-6">
-              {newsItems[currentSlide].excerpt}
+            <p className="text-xl text-white/90 mb-8 leading-relaxed">
+              Мы создаём пиво мирового класса, используя лучшие ингредиенты и проверенные временем технологии
             </p>
             <div className="flex gap-4">
-              <Button size="lg" className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
-                Читать далее
+              <Button size="lg" className="bg-amber-500 hover:bg-amber-600 text-white">
+                Наша продукция
                 <Icon name="ArrowRight" className="ml-2" size={18} />
               </Button>
-              <div className="flex gap-2">
-                {newsItems.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentSlide(index)}
-                    className={`w-2 h-2 rounded-full transition-all ${
-                      index === currentSlide 
-                        ? 'bg-white w-8' 
-                        : 'bg-white/50 hover:bg-white/70'
-                    }`}
-                  />
-                ))}
+              <Button size="lg" variant="outline" className="bg-white/10 backdrop-blur-sm text-white border-white hover:bg-white/20">
+                Узнать больше
+              </Button>
+            </div>
+            <div className="grid grid-cols-3 gap-8 mt-12 pt-8 border-t border-white/20">
+              <div>
+                <div className="text-4xl font-bold text-amber-400 mb-1">30+</div>
+                <div className="text-sm text-white/80">стран экспорта</div>
+              </div>
+              <div>
+                <div className="text-4xl font-bold text-amber-400 mb-1">15</div>
+                <div className="text-sm text-white/80">видов пива</div>
+              </div>
+              <div>
+                <div className="text-4xl font-bold text-amber-400 mb-1">№1</div>
+                <div className="text-sm text-white/80">в России</div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section id="about" className="py-20 container mx-auto px-4">
-        <div className="text-center mb-16 animate-fade-in">
-          <Badge className="mb-4 bg-purple-100 text-purple-700 border-0">О нас</Badge>
-          <h2 className="text-4xl font-bold mb-4">Миссия и команда</h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Информируем студентов о жизни кампуса и организуемых событиях
-          </p>
-        </div>
-
-        <Tabs defaultValue="mission" className="max-w-4xl mx-auto">
-          <TabsList className="grid w-full grid-cols-3 mb-8">
-            <TabsTrigger value="mission">Миссия</TabsTrigger>
-            <TabsTrigger value="team">Команда</TabsTrigger>
-            <TabsTrigger value="history">История</TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="mission" className="animate-fade-in">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Icon name="Target" className="text-purple-600" />
-                  Наша миссия
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-muted-foreground leading-relaxed">
-                  Пресс-служба БАлтика создана для обеспечения прозрачной и оперативной коммуникации 
-                  между студентами, преподавателями и администрацией университета.
-                </p>
-                <div className="grid md:grid-cols-3 gap-4 mt-6">
-                  <div className="p-6 bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl hover:scale-105 transition-transform">
-                    <Icon name="Newspaper" className="text-purple-600 mb-3" size={32} />
-                    <h4 className="font-semibold mb-2">Актуальные новости</h4>
-                    <p className="text-sm text-muted-foreground">Ежедневное освещение событий кампуса</p>
-                  </div>
-                  <div className="p-6 bg-gradient-to-br from-pink-50 to-pink-100 rounded-xl hover:scale-105 transition-transform">
-                    <Icon name="Users" className="text-pink-600 mb-3" size={32} />
-                    <h4 className="font-semibold mb-2">Студенческое сообщество</h4>
-                    <p className="text-sm text-muted-foreground">Платформа для общения и обмена идеями</p>
-                  </div>
-                  <div className="p-6 bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl hover:scale-105 transition-transform">
-                    <Icon name="Calendar" className="text-orange-600 mb-3" size={32} />
-                    <h4 className="font-semibold mb-2">Мероприятия</h4>
-                    <p className="text-sm text-muted-foreground">Анонсы и репортажи событий</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-          
-          <TabsContent value="team" className="animate-fade-in">
-            <div className="grid md:grid-cols-2 gap-6">
-              {teamMembers.map((member, index) => (
-                <Card key={index} className="hover:shadow-lg transition-shadow">
-                  <CardHeader>
-                    <div className="flex items-center gap-4">
-                      <div className="text-5xl">{member.image}</div>
-                      <div>
-                        <CardTitle className="text-xl">{member.name}</CardTitle>
-                        <CardDescription>{member.role}</CardDescription>
-                      </div>
-                    </div>
-                  </CardHeader>
-                </Card>
-              ))}
-            </div>
-          </TabsContent>
-          
-          <TabsContent value="history" className="animate-fade-in">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Icon name="BookOpen" className="text-purple-600" />
-                  История создания
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-6">
-                  <div className="border-l-4 border-purple-600 pl-4">
-                    <p className="font-semibold">2020 год</p>
-                    <p className="text-muted-foreground">Основание пресс-службы БАлтика группой энтузиастов</p>
-                  </div>
-                  <div className="border-l-4 border-pink-600 pl-4">
-                    <p className="font-semibold">2022 год</p>
-                    <p className="text-muted-foreground">Запуск собственного медиаканала и расширение команды</p>
-                  </div>
-                  <div className="border-l-4 border-orange-600 pl-4">
-                    <p className="font-semibold">2025 год</p>
-                    <p className="text-muted-foreground">Открытие нового студенческого медиацентра</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
-      </section>
-
-      <section id="news" className="py-20 bg-white">
+      <section id="products" className="py-24 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16 animate-fade-in">
-            <Badge className="mb-4 bg-pink-100 text-pink-700 border-0">Новости</Badge>
-            <h2 className="text-4xl font-bold mb-4">Последние публикации</h2>
+            <Badge className="mb-4 bg-blue-100 text-blue-700 border-0">Продукция</Badge>
+            <h2 className="text-5xl font-bold mb-4">Наша продукция</h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Широкий ассортимент премиального пива на любой вкус
+            </p>
           </div>
-          
+
+          <div className="flex justify-center gap-3 mb-12">
+            {["Все", "Светлое", "Тёмное", "Крепкое", "Безалкогольное"].map((type) => (
+              <Button
+                key={type}
+                variant={selectedType === type ? "default" : "outline"}
+                onClick={() => setSelectedType(type)}
+                className={selectedType === type ? "bg-gradient-to-r from-blue-600 to-blue-800" : ""}
+              >
+                {type}
+              </Button>
+            ))}
+          </div>
+
           <div className="grid md:grid-cols-3 gap-8">
-            {newsItems.map((item, index) => (
-              <Card key={item.id} className="overflow-hidden hover:shadow-xl transition-all hover:-translate-y-2 animate-scale-in" style={{ animationDelay: `${index * 100}ms` }}>
-                <div className="relative h-48 overflow-hidden">
-                  <img 
-                    src={item.image} 
-                    alt={item.title} 
-                    className="w-full h-full object-cover transition-transform hover:scale-110"
-                  />
-                  <Badge className="absolute top-4 left-4 bg-gradient-to-r from-purple-600 to-pink-600 border-0">
-                    {item.category}
-                  </Badge>
+            {filteredProducts.map((product, index) => (
+              <Card key={product.id} className="overflow-hidden hover:shadow-2xl transition-all hover:-translate-y-2 animate-scale-in border-2" style={{ animationDelay: `${index * 100}ms` }}>
+                <div className="h-48 bg-gradient-to-br from-blue-600 to-blue-900 flex items-center justify-center relative overflow-hidden">
+                  <Icon name="Beer" className="text-amber-400/20 absolute" size={120} />
+                  <div className="relative text-center text-white z-10">
+                    <div className="text-5xl font-bold mb-2">{product.alc}</div>
+                    <Badge className="bg-amber-500 border-0">{product.type}</Badge>
+                  </div>
                 </div>
                 <CardHeader>
-                  <CardDescription className="flex items-center gap-2 text-xs">
-                    <Icon name="Calendar" size={14} />
-                    {item.date}
-                  </CardDescription>
-                  <CardTitle className="text-xl hover:text-primary transition-colors">
-                    {item.title}
-                  </CardTitle>
+                  <CardTitle className="text-xl">{product.name}</CardTitle>
+                  <CardDescription className="text-base">{product.desc}</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">{item.excerpt}</p>
-                </CardContent>
-                <CardFooter>
-                  <Button variant="ghost" className="w-full group">
+                  <Button className="w-full bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900">
                     Подробнее
-                    <Icon name="ArrowRight" className="ml-2 group-hover:translate-x-1 transition-transform" size={16} />
+                    <Icon name="ChevronRight" className="ml-2" size={16} />
                   </Button>
-                </CardFooter>
+                </CardContent>
               </Card>
             ))}
           </div>
         </div>
       </section>
 
-      <section id="events" className="py-20 container mx-auto px-4">
-        <div className="text-center mb-16 animate-fade-in">
-          <Badge className="mb-4 bg-orange-100 text-orange-700 border-0">Мероприятия</Badge>
-          <h2 className="text-4xl font-bold mb-4">Календарь событий</h2>
-        </div>
-        
-        <div className="max-w-3xl mx-auto space-y-4">
-          {events.map((event, index) => (
-            <Card key={index} className="hover:shadow-lg transition-all hover:border-purple-300 animate-fade-in" style={{ animationDelay: `${index * 100}ms` }}>
-              <CardContent className="p-6">
-                <div className="flex items-center gap-6">
-                  <div className="text-center">
-                    <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-pink-600 rounded-xl flex flex-col items-center justify-center text-white shadow-lg">
-                      <div className="text-2xl font-bold">{event.date.split('.')[0]}</div>
-                      <div className="text-xs">{event.date.split('.')[1]}</div>
-                    </div>
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-lg mb-1">{event.title}</h3>
-                    <p className="text-sm text-muted-foreground flex items-center gap-2">
-                      <Icon name="Clock" size={14} />
-                      {event.time}
-                    </p>
-                  </div>
-                  <Button variant="outline" className="hover:bg-gradient-to-r hover:from-purple-600 hover:to-pink-600 hover:text-white hover:border-transparent">
-                    <Icon name="Bell" size={16} />
-                  </Button>
+      <section id="about" className="py-24 bg-gradient-to-br from-slate-50 to-blue-50">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-2 gap-16 items-center">
+            <div className="animate-fade-in">
+              <Badge className="mb-6 bg-amber-500 text-white border-0">О компании</Badge>
+              <h2 className="text-5xl font-bold mb-6">34 года традиций и инноваций</h2>
+              <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
+                Балтика — крупнейший производитель пива в России и Восточной Европе. 
+                Мы гордимся нашей историей, качеством продукции и доверием миллионов потребителей.
+              </p>
+              <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
+                Используя только натуральные ингредиенты и современные технологии, 
+                мы создаём пиво, которое любят во всём мире.
+              </p>
+              
+              <div className="grid grid-cols-2 gap-6">
+                <div className="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                  <Icon name="Award" className="text-amber-500 mb-3" size={32} />
+                  <div className="text-2xl font-bold mb-1">200+</div>
+                  <div className="text-sm text-muted-foreground">наград</div>
                 </div>
-              </CardContent>
-            </Card>
-          ))}
+                <div className="p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                  <Icon name="Users" className="text-blue-600 mb-3" size={32} />
+                  <div className="text-2xl font-bold mb-1">5000+</div>
+                  <div className="text-sm text-muted-foreground">сотрудников</div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="relative animate-scale-in">
+              <img 
+                src="https://cdn.poehali.dev/projects/7421cca5-0f09-43bd-8e4c-494ec9ab45e3/files/b3b4f37e-7fed-4c17-bb8f-9f9a58dc1581.jpg"
+                alt="Завод Балтика" 
+                className="rounded-2xl shadow-2xl"
+              />
+              <div className="absolute -bottom-6 -left-6 bg-gradient-to-r from-amber-500 to-amber-600 text-white p-6 rounded-xl shadow-xl">
+                <div className="text-3xl font-bold mb-1">1990</div>
+                <div className="text-sm">Год основания</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-4 gap-8 mt-24">
+            {achievements.map((item, index) => (
+              <Card key={index} className="text-center hover:shadow-lg transition-all hover:-translate-y-1 animate-fade-in" style={{ animationDelay: `${index * 150}ms` }}>
+                <CardHeader>
+                  <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Icon name={item.icon as any} className="text-amber-400" size={28} />
+                  </div>
+                  <div className="text-3xl font-bold text-blue-700 mb-2">{item.year}</div>
+                  <CardTitle className="text-lg">{item.title}</CardTitle>
+                </CardHeader>
+              </Card>
+            ))}
+          </div>
         </div>
       </section>
 
-      <section id="contact" className="py-20 bg-gradient-to-br from-purple-600 via-pink-600 to-orange-600 text-white">
+      <section id="quality" className="py-24 bg-white">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-16 animate-fade-in">
+            <Badge className="mb-4 bg-amber-100 text-amber-700 border-0">Качество</Badge>
+            <h2 className="text-5xl font-bold mb-4">Контроль качества</h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Каждая бутылка проходит строжайший контроль на всех этапах производства
+            </p>
+          </div>
+
+          <Tabs defaultValue="ingredients" className="max-w-5xl mx-auto">
+            <TabsList className="grid w-full grid-cols-3 mb-12">
+              <TabsTrigger value="ingredients">Ингредиенты</TabsTrigger>
+              <TabsTrigger value="production">Производство</TabsTrigger>
+              <TabsTrigger value="control">Контроль</TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="ingredients" className="animate-fade-in">
+              <div className="grid md:grid-cols-2 gap-12 items-center">
+                <img 
+                  src="https://cdn.poehali.dev/projects/7421cca5-0f09-43bd-8e4c-494ec9ab45e3/files/5d9a0888-2e60-4a62-b2a4-e23f8978ea3a.jpg"
+                  alt="Ингредиенты" 
+                  className="rounded-xl shadow-xl"
+                />
+                <div>
+                  <h3 className="text-3xl font-bold mb-6">Только натуральные ингредиенты</h3>
+                  <div className="space-y-4">
+                    <div className="flex gap-4">
+                      <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Icon name="Wheat" className="text-amber-600" size={24} />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold mb-1">Солод высшего качества</h4>
+                        <p className="text-sm text-muted-foreground">Отборный ячменный солод от проверенных поставщиков</p>
+                      </div>
+                    </div>
+                    <div className="flex gap-4">
+                      <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Icon name="Droplet" className="text-blue-600" size={24} />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold mb-1">Чистейшая вода</h4>
+                        <p className="text-sm text-muted-foreground">Многоступенчатая система очистки воды</p>
+                      </div>
+                    </div>
+                    <div className="flex gap-4">
+                      <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Icon name="Leaf" className="text-green-600" size={24} />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold mb-1">Натуральный хмель</h4>
+                        <p className="text-sm text-muted-foreground">Ароматные сорта хмеля из лучших регионов</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="production" className="animate-fade-in">
+              <Card>
+                <CardContent className="p-8">
+                  <div className="grid md:grid-cols-3 gap-8">
+                    <div className="text-center">
+                      <div className="w-20 h-20 bg-gradient-to-br from-blue-600 to-blue-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span className="text-3xl font-bold text-white">1</span>
+                      </div>
+                      <h4 className="font-semibold mb-2">Варка сусла</h4>
+                      <p className="text-sm text-muted-foreground">Традиционная технология варки с соблюдением температурных режимов</p>
+                    </div>
+                    <div className="text-center">
+                      <div className="w-20 h-20 bg-gradient-to-br from-blue-600 to-blue-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span className="text-3xl font-bold text-white">2</span>
+                      </div>
+                      <h4 className="font-semibold mb-2">Брожение</h4>
+                      <p className="text-sm text-muted-foreground">Контролируемое брожение в современных танках</p>
+                    </div>
+                    <div className="text-center">
+                      <div className="w-20 h-20 bg-gradient-to-br from-blue-600 to-blue-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span className="text-3xl font-bold text-white">3</span>
+                      </div>
+                      <h4 className="font-semibold mb-2">Розлив</h4>
+                      <p className="text-sm text-muted-foreground">Автоматизированная линия розлива с защитой от кислорода</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+            
+            <TabsContent value="control" className="animate-fade-in">
+              <Card>
+                <CardContent className="p-8">
+                  <div className="space-y-6">
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Icon name="CheckCircle" className="text-green-600" size={24} />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-semibold mb-2">Лабораторный контроль</h4>
+                        <p className="text-muted-foreground">Более 100 параметров проверяется на каждом этапе производства</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Icon name="Shield" className="text-blue-600" size={24} />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-semibold mb-2">Международные сертификаты</h4>
+                        <p className="text-muted-foreground">Соответствие стандартам ISO и ХАССП</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Icon name="Award" className="text-amber-600" size={24} />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-semibold mb-2">Дегустационная комиссия</h4>
+                        <p className="text-muted-foreground">Экспертная оценка вкусовых качеств каждой партии</p>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
+        </div>
+      </section>
+
+      <section id="contact" className="py-24 bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 text-white">
+        <div className="container mx-auto px-4">
+          <div className="max-w-5xl mx-auto">
             <div className="text-center mb-16 animate-fade-in">
-              <h2 className="text-4xl font-bold mb-4">Свяжитесь с нами</h2>
+              <h2 className="text-5xl font-bold mb-4">Свяжитесь с нами</h2>
               <p className="text-xl opacity-90">Мы всегда рады вашим вопросам и предложениям</p>
             </div>
             
             <div className="grid md:grid-cols-2 gap-12">
-              <div className="space-y-6 animate-fade-in">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
-                    <Icon name="MapPin" size={24} />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold mb-1">Адрес</h4>
-                    <p className="opacity-90">г. Калининград, ул. Студенческая, 1</p>
+              <div className="space-y-8 animate-fade-in">
+                <div>
+                  <h3 className="text-2xl font-bold mb-6">Контактная информация</h3>
+                  
+                  <div className="space-y-6">
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center backdrop-blur-sm">
+                        <Icon name="MapPin" size={24} />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold mb-1">Головной офис</h4>
+                        <p className="opacity-90">г. Санкт-Петербург, 6-й Верхний переулок, д. 3</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center backdrop-blur-sm">
+                        <Icon name="Phone" size={24} />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold mb-1">Телефон</h4>
+                        <p className="opacity-90">8 (800) 700-03-00</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center backdrop-blur-sm">
+                        <Icon name="Mail" size={24} />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold mb-1">Email</h4>
+                        <p className="opacity-90">info@baltika.ru</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
-                    <Icon name="Phone" size={24} />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold mb-1">Телефон</h4>
-                    <p className="opacity-90">+7 (401) 234-56-78</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
-                    <Icon name="Mail" size={24} />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold mb-1">Email</h4>
-                    <p className="opacity-90">press@baltika.edu</p>
-                  </div>
-                </div>
-                
-                <div className="pt-6">
+
+                <div>
                   <h4 className="font-semibold mb-4">Социальные сети</h4>
                   <div className="flex gap-3">
-                    <Button variant="secondary" size="icon" className="rounded-xl">
+                    <Button variant="secondary" size="icon" className="rounded-lg bg-white/10 hover:bg-white/20">
                       <Icon name="Instagram" size={20} />
                     </Button>
-                    <Button variant="secondary" size="icon" className="rounded-xl">
+                    <Button variant="secondary" size="icon" className="rounded-lg bg-white/10 hover:bg-white/20">
                       <Icon name="Facebook" size={20} />
                     </Button>
-                    <Button variant="secondary" size="icon" className="rounded-xl">
-                      <Icon name="Mail" size={20} />
+                    <Button variant="secondary" size="icon" className="rounded-lg bg-white/10 hover:bg-white/20">
+                      <Icon name="Twitter" size={20} />
+                    </Button>
+                    <Button variant="secondary" size="icon" className="rounded-lg bg-white/10 hover:bg-white/20">
+                      <Icon name="Youtube" size={20} />
                     </Button>
                   </div>
                 </div>
@@ -384,7 +416,7 @@ export default function Index() {
               <Card className="animate-scale-in">
                 <CardHeader>
                   <CardTitle>Форма обратной связи</CardTitle>
-                  <CardDescription>Оставьте ваше сообщение</CardDescription>
+                  <CardDescription>Оставьте ваше сообщение и мы свяжемся с вами</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <form onSubmit={handleSubmit} className="space-y-4">
@@ -414,7 +446,7 @@ export default function Index() {
                         required
                       />
                     </div>
-                    <Button type="submit" className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
+                    <Button type="submit" className="w-full bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900">
                       Отправить сообщение
                       <Icon name="Send" className="ml-2" size={16} />
                     </Button>
@@ -427,15 +459,47 @@ export default function Index() {
       </section>
 
       <footer className="bg-slate-900 text-white py-12">
-        <div className="container mx-auto px-4 text-center">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="w-10 h-10 bg-gradient-to-br from-purple-600 to-pink-600 rounded-lg flex items-center justify-center">
-              <Icon name="Radio" className="text-white" size={20} />
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-4 gap-8 mb-8">
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <Icon name="Beer" className="text-amber-400" size={24} />
+                <span className="text-xl font-bold">БАЛТИКА</span>
+              </div>
+              <p className="text-sm text-slate-400">Традиции качества с 1990 года</p>
             </div>
-            <span className="text-xl font-bold">БАлтика</span>
+            <div>
+              <h4 className="font-semibold mb-4">Продукция</h4>
+              <ul className="space-y-2 text-sm text-slate-400">
+                <li><a href="#" className="hover:text-white transition-colors">Светлое пиво</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Тёмное пиво</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Крепкое пиво</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Безалкогольное</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-4">Компания</h4>
+              <ul className="space-y-2 text-sm text-slate-400">
+                <li><a href="#" className="hover:text-white transition-colors">О нас</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">История</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Карьера</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Пресс-центр</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-4">Информация</h4>
+              <ul className="space-y-2 text-sm text-slate-400">
+                <li><a href="#" className="hover:text-white transition-colors">Контакты</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Где купить</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Экскурсии</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">FAQ</a></li>
+              </ul>
+            </div>
           </div>
-          <p className="text-slate-400 mb-4">Пресс-служба студенческого кампуса</p>
-          <p className="text-sm text-slate-500">© 2025 БАлтика. Все права защищены.</p>
+          <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-sm text-slate-500">© 2025 Балтика. Все права защищены.</p>
+            <p className="text-xs text-slate-600">Чрезмерное употребление алкоголя вредит вашему здоровью</p>
+          </div>
         </div>
       </footer>
     </div>
