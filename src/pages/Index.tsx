@@ -79,10 +79,9 @@ const studentNews = [
 ];
 
 const studentTeam = [
-  { name: "Алексей Смирнов", role: "Главный редактор", emoji: "👨‍💼", bio: "3 курс, факультет журналистики" },
-  { name: "Мария Иванова", role: "Корреспондент", emoji: "👩‍💻", bio: "2 курс, медиакоммуникации" },
-  { name: "Дмитрий Петров", role: "Фотограф", emoji: "📸", bio: "4 курс, визуальные искусства" },
-  { name: "Анна Козлова", role: "SMM-менеджер", emoji: "📱", bio: "2 курс, PR и реклама" }
+  { name: "Погосян Ануш", role: "Главный редактор", emoji: "👩‍💼", bio: "Руководит работой пресс-службы" },
+  { name: "Фурманова Мария", role: "Корреспондент", emoji: "✍️", bio: "Пишет статьи и репортажи" },
+  { name: "Лапшина Виктория", role: "Фотограф", emoji: "📸", bio: "Создает визуальный контент" }
 ];
 
 const studentEvents = [
@@ -94,6 +93,7 @@ const studentEvents = [
 export default function Index() {
   const [selectedType, setSelectedType] = useState("Все");
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [showStudentPress, setShowStudentPress] = useState(false);
 
   const filteredProducts = selectedType === "Все" 
     ? products 
@@ -128,11 +128,11 @@ export default function Index() {
                 <p className="text-xs text-muted-foreground">С 1990 года</p>
               </div>
             </button>
-            <nav className="hidden md:flex gap-6">
+            <nav className="hidden md:flex gap-8">
               <button onClick={() => scrollToSection('products')} className="text-sm font-medium hover:text-primary transition-colors">Продукция</button>
               <button onClick={() => scrollToSection('about')} className="text-sm font-medium hover:text-primary transition-colors">О компании</button>
-              <button onClick={() => scrollToSection('student-press')} className="text-sm font-medium hover:text-primary transition-colors">Студ. пресс-служба</button>
               <button onClick={() => scrollToSection('values')} className="text-sm font-medium hover:text-primary transition-colors">Ценности</button>
+              <button onClick={() => scrollToSection('quality')} className="text-sm font-medium hover:text-primary transition-colors">Качество</button>
               <button onClick={() => scrollToSection('contact')} className="text-sm font-medium hover:text-primary transition-colors">Контакты</button>
             </nav>
             <Button onClick={() => toast.info('Раздел "Где купить" в разработке')} className="bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900">
@@ -311,203 +311,6 @@ export default function Index() {
         </div>
       </section>
 
-      <section id="student-press" className="py-24 bg-gradient-to-br from-purple-600 via-pink-600 to-orange-600 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDE4YzAtOS45NC04LjA2LTE4LTE4LTE4UzAgOC4wNiAwIDE4YzAgMy43MSAxLjEyIDcuMTggMy4wNSAxMC4wNkw4LjEgMjMuMDFDNy40IDIxLjQxIDcgMTkuNzMgNyAxOGMwLTYuMDggNC45My0xMSAxMS0xMXMxMSA0LjkyIDExIDExYzAgMS43My0uNCwzLjQxLTEuMSA1LjAxbDUuMDUgNS4wNUM0OC44OCAyNS4xOCA1MCAyMS43MSA1MCAxOGMwLTkuOTQtOC4wNi0xOC0xOC0xOHoiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-10"></div>
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center mb-16 animate-fade-in">
-            <Badge className="mb-4 bg-white/20 backdrop-blur-sm text-white border-0">Студенческая пресс-служба</Badge>
-            <h2 className="text-5xl font-bold mb-4">Студенческая пресс-служба БАлтика</h2>
-            <p className="text-xl opacity-90 max-w-2xl mx-auto">
-              Информируем студентов о жизни кампуса и организуемых событиях
-            </p>
-          </div>
-
-          <div className="max-w-6xl mx-auto mb-16">
-            <Tabs defaultValue="news" className="w-full">
-              <TabsList className="grid w-full grid-cols-4 mb-12 bg-white/10 backdrop-blur-sm">
-                <TabsTrigger value="news" className="data-[state=active]:bg-white data-[state=active]:text-purple-700">Новости</TabsTrigger>
-                <TabsTrigger value="team" className="data-[state=active]:bg-white data-[state=active]:text-purple-700">Команда</TabsTrigger>
-                <TabsTrigger value="events" className="data-[state=active]:bg-white data-[state=active]:text-purple-700">Мероприятия</TabsTrigger>
-                <TabsTrigger value="media" className="data-[state=active]:bg-white data-[state=active]:text-purple-700">Медиа</TabsTrigger>
-              </TabsList>
-
-              <TabsContent value="news" className="animate-fade-in">
-                <div className="grid md:grid-cols-3 gap-8">
-                  {studentNews.map((item, index) => (
-                    <Card key={item.id} className="overflow-hidden hover:shadow-2xl transition-all hover:-translate-y-2" style={{ animationDelay: `${index * 100}ms` }}>
-                      <div className="relative h-48 overflow-hidden">
-                        <img 
-                          src={item.image} 
-                          alt={item.title} 
-                          className="w-full h-full object-cover transition-transform hover:scale-110"
-                        />
-                        <Badge className="absolute top-4 left-4 bg-gradient-to-r from-purple-600 to-pink-600 border-0 text-white">
-                          {item.category}
-                        </Badge>
-                      </div>
-                      <CardHeader>
-                        <CardDescription className="flex items-center gap-2 text-xs">
-                          <Icon name="Calendar" size={14} />
-                          {item.date}
-                        </CardDescription>
-                        <CardTitle className="text-xl">{item.title}</CardTitle>
-                        <CardDescription className="text-base">{item.excerpt}</CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <Button 
-                          onClick={() => toast.info(item.title, { description: item.excerpt })}
-                          variant="outline" 
-                          className="w-full group"
-                        >
-                          Читать далее
-                          <Icon name="ArrowRight" className="ml-2 group-hover:translate-x-1 transition-transform" size={16} />
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </TabsContent>
-
-              <TabsContent value="team" className="animate-fade-in">
-                <Card className="bg-white/95 backdrop-blur-sm">
-                  <CardHeader className="text-center">
-                    <CardTitle className="text-3xl text-foreground">Наша команда</CardTitle>
-                    <CardDescription className="text-lg">Знакомьтесь с активными участниками пресс-службы</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="grid md:grid-cols-2 gap-6">
-                      {studentTeam.map((member, index) => (
-                        <Card key={index} className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => toast.info(member.name, { description: member.bio })}>
-                          <CardHeader>
-                            <div className="flex items-center gap-4">
-                              <div className="text-6xl">{member.emoji}</div>
-                              <div>
-                                <CardTitle className="text-xl">{member.name}</CardTitle>
-                                <CardDescription className="text-base font-semibold text-purple-700">{member.role}</CardDescription>
-                                <CardDescription className="text-sm mt-1">{member.bio}</CardDescription>
-                              </div>
-                            </div>
-                          </CardHeader>
-                        </Card>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
-              <TabsContent value="events" className="animate-fade-in">
-                <div className="space-y-4">
-                  {studentEvents.map((event, index) => (
-                    <Card key={index} className="hover:shadow-xl transition-all bg-white/95 backdrop-blur-sm">
-                      <CardContent className="p-6">
-                        <div className="flex items-center gap-6">
-                          <div className="text-center">
-                            <div className="w-20 h-20 bg-gradient-to-br from-purple-600 to-pink-600 rounded-xl flex flex-col items-center justify-center text-white shadow-lg">
-                              <div className="text-3xl font-bold">{event.date.split('.')[0]}</div>
-                              <div className="text-sm">{event.date.split('.')[1]}</div>
-                            </div>
-                          </div>
-                          <div className="flex-1">
-                            <h3 className="font-semibold text-xl mb-2 text-foreground">{event.title}</h3>
-                            <div className="flex gap-4 text-sm text-muted-foreground">
-                              <div className="flex items-center gap-2">
-                                <Icon name="Clock" size={16} />
-                                {event.time}
-                              </div>
-                              <div className="flex items-center gap-2">
-                                <Icon name="MapPin" size={16} />
-                                {event.location}
-                              </div>
-                            </div>
-                          </div>
-                          <Button 
-                            onClick={() => toast.success('Вы записались на мероприятие!', { description: event.title })}
-                            className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
-                          >
-                            Записаться
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </TabsContent>
-
-              <TabsContent value="media" className="animate-fade-in">
-                <Card className="bg-white/95 backdrop-blur-sm">
-                  <CardHeader className="text-center">
-                    <CardTitle className="text-3xl text-foreground">Медиагалерея</CardTitle>
-                    <CardDescription className="text-lg">Фото и видео с мероприятий</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="grid md:grid-cols-3 gap-6">
-                      {studentNews.map((item, index) => (
-                        <div key={index} className="relative group cursor-pointer" onClick={() => toast.info('Просмотр медиа', { description: item.title })}>
-                          <img 
-                            src={item.image} 
-                            alt={item.title} 
-                            className="rounded-xl shadow-lg w-full h-64 object-cover transition-transform group-hover:scale-105"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
-                            <div className="text-white">
-                              <p className="font-semibold">{item.title}</p>
-                              <p className="text-sm opacity-90">{item.date}</p>
-                            </div>
-                          </div>
-                          <div className="absolute top-4 right-4 w-12 h-12 bg-white/90 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                            <Icon name="Play" className="text-purple-600" size={24} />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-            </Tabs>
-          </div>
-
-          <div className="max-w-4xl mx-auto">
-            <Card className="bg-white/10 backdrop-blur-sm border-white/20">
-              <CardHeader className="text-center">
-                <CardTitle className="text-3xl text-white">Присоединяйся к нам!</CardTitle>
-                <CardDescription className="text-lg text-white/90">
-                  Стань частью студенческой пресс-службы БАлтика
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="grid md:grid-cols-3 gap-6">
-                  <div className="text-center p-6 bg-white/10 rounded-xl">
-                    <Icon name="Camera" className="mx-auto mb-3" size={40} />
-                    <h4 className="font-semibold mb-2">Фоторепортёры</h4>
-                    <p className="text-sm opacity-90">Снимай события кампуса</p>
-                  </div>
-                  <div className="text-center p-6 bg-white/10 rounded-xl">
-                    <Icon name="Pen" className="mx-auto mb-3" size={40} />
-                    <h4 className="font-semibold mb-2">Журналисты</h4>
-                    <p className="text-sm opacity-90">Пиши статьи и репортажи</p>
-                  </div>
-                  <div className="text-center p-6 bg-white/10 rounded-xl">
-                    <Icon name="Video" className="mx-auto mb-3" size={40} />
-                    <h4 className="font-semibold mb-2">Видеооператоры</h4>
-                    <p className="text-sm opacity-90">Создавай видеоконтент</p>
-                  </div>
-                </div>
-                <div className="text-center mt-8">
-                  <Button 
-                    onClick={() => toast.success('Заявка отправлена!', { description: 'Мы свяжемся с вами в ближайшее время' })}
-                    size="lg" 
-                    className="bg-white text-purple-700 hover:bg-white/90"
-                  >
-                    Подать заявку
-                    <Icon name="Send" className="ml-2" size={18} />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
       <section id="values" className="py-24 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16 animate-fade-in">
@@ -578,8 +381,218 @@ export default function Index() {
               />
             </div>
           </div>
+
+          <div className="text-center mt-16 animate-fade-in">
+            <Button 
+              onClick={() => setShowStudentPress(!showStudentPress)}
+              size="lg"
+              className="bg-gradient-to-r from-purple-600 via-pink-600 to-orange-600 hover:from-purple-700 hover:via-pink-700 hover:to-orange-700 text-white"
+            >
+              {showStudentPress ? 'Скрыть' : 'Показать'} студенческую пресс-службу
+              <Icon name={showStudentPress ? "ChevronUp" : "ChevronDown"} className="ml-2" size={20} />
+            </Button>
+          </div>
         </div>
       </section>
+
+      {showStudentPress && (
+        <section id="student-press" className="py-24 bg-gradient-to-br from-purple-600 via-pink-600 to-orange-600 text-white relative overflow-hidden animate-fade-in">
+          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDE4YzAtOS45NC04LjA2LTE4LTE4LTE4UzAgOC4wNiAwIDE4YzAgMy43MSAxLjEyIDcuMTggMy4wNSAxMC4wNkw4LjEgMjMuMDFDNy40IDIxLjQxIDcgMTkuNzMgNyAxOGMwLTYuMDggNC45My0xMSAxMS0xMXMxMSA0LjkyIDExIDExYzAgMS43My0uNCwzLjQxLTEuMSA1LjAxbDUuMDUgNS4wNUM0OC44OCAyNS4xOCA1MCAyMS43MSA1MCAxOGMwLTkuOTQtOC4wNi0xOC0xOC0xOHoiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-10"></div>
+          <div className="container mx-auto px-4 relative z-10">
+            <div className="text-center mb-16 animate-fade-in">
+              <Badge className="mb-4 bg-white/20 backdrop-blur-sm text-white border-0">Студенческая пресс-служба</Badge>
+              <h2 className="text-5xl font-bold mb-4">Студенческая пресс-служба БАлтика</h2>
+              <p className="text-xl opacity-90 max-w-2xl mx-auto">
+                Информируем студентов о жизни кампуса и организуемых событиях
+              </p>
+            </div>
+
+            <div className="max-w-6xl mx-auto mb-16">
+              <Tabs defaultValue="news" className="w-full">
+                <TabsList className="grid w-full grid-cols-4 mb-12 bg-white/10 backdrop-blur-sm">
+                  <TabsTrigger value="news" className="data-[state=active]:bg-white data-[state=active]:text-purple-700">Новости</TabsTrigger>
+                  <TabsTrigger value="team" className="data-[state=active]:bg-white data-[state=active]:text-purple-700">Команда</TabsTrigger>
+                  <TabsTrigger value="events" className="data-[state=active]:bg-white data-[state=active]:text-purple-700">Мероприятия</TabsTrigger>
+                  <TabsTrigger value="media" className="data-[state=active]:bg-white data-[state=active]:text-purple-700">Медиа</TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="news" className="animate-fade-in">
+                  <div className="grid md:grid-cols-3 gap-8">
+                    {studentNews.map((item, index) => (
+                      <Card key={item.id} className="overflow-hidden hover:shadow-2xl transition-all hover:-translate-y-2" style={{ animationDelay: `${index * 100}ms` }}>
+                        <div className="relative h-48 overflow-hidden">
+                          <img 
+                            src={item.image} 
+                            alt={item.title} 
+                            className="w-full h-full object-cover transition-transform hover:scale-110"
+                          />
+                          <Badge className="absolute top-4 left-4 bg-gradient-to-r from-purple-600 to-pink-600 border-0 text-white">
+                            {item.category}
+                          </Badge>
+                        </div>
+                        <CardHeader>
+                          <CardDescription className="flex items-center gap-2 text-xs">
+                            <Icon name="Calendar" size={14} />
+                            {item.date}
+                          </CardDescription>
+                          <CardTitle className="text-xl">{item.title}</CardTitle>
+                          <CardDescription className="text-base">{item.excerpt}</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                          <Button 
+                            onClick={() => toast.info(item.title, { description: item.excerpt })}
+                            variant="outline" 
+                            className="w-full group"
+                          >
+                            Читать далее
+                            <Icon name="ArrowRight" className="ml-2 group-hover:translate-x-1 transition-transform" size={16} />
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="team" className="animate-fade-in">
+                  <Card className="bg-white/95 backdrop-blur-sm">
+                    <CardHeader className="text-center">
+                      <CardTitle className="text-3xl text-foreground">Наша команда</CardTitle>
+                      <CardDescription className="text-lg">Знакомьтесь с активными участниками пресс-службы</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid md:grid-cols-3 gap-6">
+                        {studentTeam.map((member, index) => (
+                          <Card key={index} className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => toast.info(member.name, { description: member.bio })}>
+                            <CardHeader>
+                              <div className="flex flex-col items-center text-center gap-4">
+                                <div className="text-6xl">{member.emoji}</div>
+                                <div>
+                                  <CardTitle className="text-xl">{member.name}</CardTitle>
+                                  <CardDescription className="text-base font-semibold text-purple-700">{member.role}</CardDescription>
+                                  <CardDescription className="text-sm mt-1">{member.bio}</CardDescription>
+                                </div>
+                              </div>
+                            </CardHeader>
+                          </Card>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+
+                <TabsContent value="events" className="animate-fade-in">
+                  <div className="space-y-4">
+                    {studentEvents.map((event, index) => (
+                      <Card key={index} className="hover:shadow-xl transition-all bg-white/95 backdrop-blur-sm">
+                        <CardContent className="p-6">
+                          <div className="flex items-center gap-6">
+                            <div className="text-center">
+                              <div className="w-20 h-20 bg-gradient-to-br from-purple-600 to-pink-600 rounded-xl flex flex-col items-center justify-center text-white shadow-lg">
+                                <div className="text-3xl font-bold">{event.date.split('.')[0]}</div>
+                                <div className="text-sm">{event.date.split('.')[1]}</div>
+                              </div>
+                            </div>
+                            <div className="flex-1">
+                              <h3 className="font-semibold text-xl mb-2 text-foreground">{event.title}</h3>
+                              <div className="flex gap-4 text-sm text-muted-foreground">
+                                <div className="flex items-center gap-2">
+                                  <Icon name="Clock" size={16} />
+                                  {event.time}
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <Icon name="MapPin" size={16} />
+                                  {event.location}
+                                </div>
+                              </div>
+                            </div>
+                            <Button 
+                              onClick={() => toast.success('Вы записались на мероприятие!', { description: event.title })}
+                              className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+                            >
+                              Записаться
+                            </Button>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="media" className="animate-fade-in">
+                  <Card className="bg-white/95 backdrop-blur-sm">
+                    <CardHeader className="text-center">
+                      <CardTitle className="text-3xl text-foreground">Медиагалерея</CardTitle>
+                      <CardDescription className="text-lg">Фото и видео с мероприятий</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid md:grid-cols-3 gap-6">
+                        {studentNews.map((item, index) => (
+                          <div key={index} className="relative group cursor-pointer" onClick={() => toast.info('Просмотр медиа', { description: item.title })}>
+                            <img 
+                              src={item.image} 
+                              alt={item.title} 
+                              className="rounded-xl shadow-lg w-full h-64 object-cover transition-transform group-hover:scale-105"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                              <div className="text-white">
+                                <p className="font-semibold">{item.title}</p>
+                                <p className="text-sm opacity-90">{item.date}</p>
+                              </div>
+                            </div>
+                            <div className="absolute top-4 right-4 w-12 h-12 bg-white/90 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                              <Icon name="Play" className="text-purple-600" size={24} />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+              </Tabs>
+            </div>
+
+            <div className="max-w-4xl mx-auto">
+              <Card className="bg-white/10 backdrop-blur-sm border-white/20">
+                <CardHeader className="text-center">
+                  <CardTitle className="text-3xl text-white">Присоединяйся к нам!</CardTitle>
+                  <CardDescription className="text-lg text-white/90">
+                    Стань частью студенческой пресс-службы БАлтика
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid md:grid-cols-3 gap-6">
+                    <div className="text-center p-6 bg-white/10 rounded-xl">
+                      <Icon name="Camera" className="mx-auto mb-3" size={40} />
+                      <h4 className="font-semibold mb-2">Фоторепортёры</h4>
+                      <p className="text-sm opacity-90">Снимай события кампуса</p>
+                    </div>
+                    <div className="text-center p-6 bg-white/10 rounded-xl">
+                      <Icon name="Pen" className="mx-auto mb-3" size={40} />
+                      <h4 className="font-semibold mb-2">Журналисты</h4>
+                      <p className="text-sm opacity-90">Пиши статьи и репортажи</p>
+                    </div>
+                    <div className="text-center p-6 bg-white/10 rounded-xl">
+                      <Icon name="Video" className="mx-auto mb-3" size={40} />
+                      <h4 className="font-semibold mb-2">Видеооператоры</h4>
+                      <p className="text-sm opacity-90">Создавай видеоконтент</p>
+                    </div>
+                  </div>
+                  <div className="text-center mt-8">
+                    <Button 
+                      onClick={() => toast.success('Заявка отправлена!', { description: 'Мы свяжемся с вами в ближайшее время' })}
+                      size="lg" 
+                      className="bg-white text-purple-700 hover:bg-white/90"
+                    >
+                      Подать заявку
+                      <Icon name="Send" className="ml-2" size={18} />
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </section>
+      )}
 
       <section id="quality" className="py-24 bg-gradient-to-br from-slate-50 to-blue-50">
         <div className="container mx-auto px-4">
